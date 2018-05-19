@@ -45,6 +45,8 @@ Route::group([ 'namespace' => 'Sites'], function() {
     });
     Route::get('find', 'ProductController@find');
     Route::get('get-cart', 'CartController@getCart');
+
+    Route::post('/checkCert', 'CertController@checkCert');
 });
 
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {

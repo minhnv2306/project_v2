@@ -46,38 +46,46 @@ class OrderController extends Controller
 
     public function store(OrderRequest $request)
     {
-        try {
-            $data = $request->only([
-                'customer_name',
-                'shipping_name',
-                'shipping_address',
-                'billing_name',
-                'billing_address',
-                'customer_email',
-                'phone',
-                'price',
-            ]);
-            if (Auth::check()) {
-                $data['user_id'] = Auth::user()->id;
-            }
-            $data['status'] = Order::PENDDING_STATUS;
-            if ($this->orderRepository->createOrder($data, $request->cartProductIds)) {
+        $pubkeyid = openssl_pkey_get_public($request->cert);
+        $ok = openssl_verify($request->text_form, hex2bin($request->sign_form), $pubkeyid);
+        if ($ok == 1) {
+            $user = json_decode($request->user);
+            try {
+                $data = $request->only([
+                    'shipping_name',
+                    'shipping_address',
+                    'billing_name',
+                    'billing_address',
+                    'phone',
+                    'price',
+                ]);
+                $data['customer_name'] = $user->name;
+                $data['customer_email'] = $user->email;
 
-                return redirect()->route('sites.my-order')
-                    ->with('message', trans('sites.order.success_add'));
-            } else {
+                if (Auth::check()) {
+                    $data['user_id'] = Auth::user()->id;
+                }
+                $data['status'] = Order::PENDDING_STATUS;
+                if ($this->orderRepository->createOrder($data, $request->cartProductIds)) {
+
+                    return redirect()->route('sites.my-order')
+                        ->with('message', trans('sites.order.success_add'));
+                } else {
+                    return view('sites.order.success_add', [
+                        'error' => trans('sites.order.not_enough'),
+                    ]);
+                }
+            } catch (Exception $ex) {
+                Log::useDailyFiles(config('app.file_log'));
+                Log::error($ex->getMessage());
+                DB::rollback();
+
                 return view('sites.order.success_add', [
-                    'error' => trans('sites.order.not_enough'),
+                    'error' => trans('sites.order.fail_add'),
                 ]);
             }
-        } catch (Exception $ex) {
-            Log::useDailyFiles(config('app.file_log'));
-            Log::error($ex->getMessage());
-            DB::rollback();
-
-            return view('sites.order.success_add', [
-                'error' => trans('sites.order.fail_add'),
-            ]);
+        } else {
+            abort(404);
         }
     }
 
