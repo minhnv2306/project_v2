@@ -43,6 +43,9 @@
     {{ Html::style('css/waitMe.min.css') }}
     {{ Html::style('css/goatstee/animation.css') }}
     {{ Html::style('css/toastr.css') }}
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://www.jqueryscript.net/demo/jQuery-Plugin-For-Creating-Loading-Overlay-with-CSS3-Animations-waitMe/waitMe.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.jqueryscript.net/demo/jQuery-Plugin-For-Creating-Loading-Overlay-with-CSS3-Animations-waitMe/waitMe.css">
     <!--[if lte IE 9]>
     <![endif]-->
 </head>

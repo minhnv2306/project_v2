@@ -375,7 +375,16 @@
                         cert: cert,
                     },
                     type: 'POST',
+                    beforeSend: function () {
+                         $('#my-form').waitMe({
+                             effect : 'bounce',
+                             text : '',
+                             bg : 'rgba(255,255,255,0.7)',
+                             color : '#000'
+                         });
+                     },
                     success: function (data, status) {
+                        $('#my-form').waitMe('hide');
                         if (data.result == 1) {
                             $('#user-infor').val(JSON.stringify(data.data));
                             var rsa = new RSAKey();
@@ -387,7 +396,7 @@
                             $("#cert").val(cert);
                             $("#my-form").submit();
                         } else {
-                            alert('Khóa của bạn có vấn đề!')
+                            swal("Error!", "Your cert is not accepted", "error");
                         }
                     }
                 });
