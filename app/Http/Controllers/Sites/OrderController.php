@@ -85,7 +85,7 @@ class OrderController extends Controller
                 ]);
             }
         } else {
-            abort(404);
+            return view('errors.cert');
         }
     }
 
