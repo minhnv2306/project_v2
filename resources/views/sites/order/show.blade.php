@@ -15,6 +15,7 @@
                                 </div>
                             @else
                                 <div class="woocommerce">
+                                    @include('layouts.sites.validation')
                                     @guest
                                         <div class="woocommerce-info"> @lang('sites.order.return_customer')
                                             <a href="{{ route('sites.my-account') }}" class="showlogin"> @lang('sites.order.login') </a>
@@ -35,7 +36,7 @@
                                                     <p class="form-row form-row form-row-wide address-field validate-required"
                                                        id="billing_city_field">
                                                         <label for="fileInput" class=""> Cert <abbr class="required" title="required">*</abbr></label>
-                                                        <input type="file" id="fileInput">
+                                                        <input type="file" id="fileInput" required>
                                                         <pre id="fileDisplayArea"></pre>
                                                         <input type="hidden" id="text-form" name="text_form">
                                                         <input type="hidden" id="sign-form" name="sign_form">

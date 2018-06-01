@@ -24,6 +24,8 @@ class OrderRequest extends FormRequest
     public function rules()
     {
         return [
+            'cert' => 'required',
+            'sign_form' => 'required',
             'shipping_name' => 'required',
             'shipping_address' => 'required',
             'billing_name' => 'required',
