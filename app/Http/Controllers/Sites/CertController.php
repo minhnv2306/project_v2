@@ -27,8 +27,9 @@ class CertController extends Controller
     {
         $param['cert'] = $request->cert;
         $uri = 'http://cert.local/api/v1/check-cert';
-        $homeAboutUs = self::getApi($uri, $param);
-        $data = json_decode($homeAboutUs, true);
+        $resultAPI = self::getApi($uri, $param);
+        $data = json_decode($resultAPI, true);
+        
         return $data;
     }
 }
